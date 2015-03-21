@@ -12,8 +12,18 @@ This module is installed via npm:
 $ npm install canister
 ```
 
-## Example Usage
-
+## Simple Usage Case
 ``` js
-var canister = require('canister');
+var Canister = require('canister');
+
+var canister = new Canister(function(name) {
+  if (name === 'a') return [1,2];
+  if (name === '_') return require('lodash');
+}};
+
+canister.run(function(a, _) {
+  return _.sum(a);
+}, function(err, sum) {
+  console.log(sum);
+});
 ```
