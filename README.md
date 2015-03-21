@@ -36,10 +36,10 @@ canister.run(function(a, cb) {
   console.log(val);
 });
 
-// Canister with multiple resolves with multiple types (hash, and resolver function)
+// Canister with multiple resolvers with multiple types (hash, and resolver function)
 var canister2 = new Canister([{a: 10}, function(name) {
   if (name === 'b') return 'B';
-});
+}]);
 
 canister2.run(function(a, b) {
   console.log(a, b);
