@@ -3,6 +3,18 @@ var Promise = require('bluebird');
 var Canister = require('../index.js');
 
 describe('canister', function() {
+  it('callsback with error if unmet dependencies', function(done) {
+    new Canister(function(name) {
+      // nothing ever resolves
+    }).run(function(a) {
+      assert.fail('should never be called since a is unmet dependency')
+    }, function(err) {
+      //assert.equal(typeof err, 'Error');
+      assert.equal(err.message, 'unmet dependencies: a');
+      done();
+    });
+  });
+
   it('handles empty injection', function(done) {
     new Canister(function(name) {
       assert.fail('should not be called');

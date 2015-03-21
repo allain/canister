@@ -15,6 +15,7 @@ function Canister(resolvers, context) {
     cb = cb || function() {};
 
     var dependencies = [];
+    var unmetDependencies = [];
     var synchronous = true;
 
     var paramNames = getParamNames(fn);
@@ -27,12 +28,16 @@ function Canister(resolvers, context) {
         var depValue = resolve(resolvers, paramName);
         if (depValue !== null && depValue !== undefined) {
           dependencies.push(depValue);
+        } else {
+          unmetDependencies.push(paramName);
         }
       }
     });
 
-    if (dependencies.length === paramNames.length) {
+    if (unmetDependencies.length === 0) {
       var result = fn.apply(context, dependencies);
+
+      // If result is a promise, then resolve it and call callback
       if (result && result.then) {
         result.then(function(value) {
           return cb(null, value);
@@ -41,7 +46,7 @@ function Canister(resolvers, context) {
         return cb(null, result);
       }
     } else {
-      return cb(null, null);
+      return cb(new Error('unmet dependencies: ' + unmetDependencies.join(',')));
     }
   };
 
