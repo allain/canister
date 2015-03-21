@@ -1,0 +1,29 @@
+{
+  "name": "canister",
+  "version": "1.0.0",
+  "description": "A minimalist Dependency Injection container.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/allain/canister"
+  },
+  "keywords": [
+    "dependency injection"
+  ],
+  "author": "allain <allain.lalonde@gmail.com>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/allain/canister/issues"
+  },
+  "dependencies": {
+    "get-parameter-names": "^0.2.0"
+  },
+  "devDependencies": {
+    "bluebird": "^2.9.14",
+    "chai": "~1.8.1",
+    "mocha": "~1.17.0"
+  }
+}
