@@ -48,9 +48,9 @@ describe('canister', function() {
   });
 
   it('supports binding contexts', function(done) {
-    new Canister({a: 10}, function() {
+    new Canister(function() {
       assert.fail('should not be run');
-    }).run(function() {
+    }, {a: 10}).run(function() {
       assert.equal(this.a, 10);
       done();
     });

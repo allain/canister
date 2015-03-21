@@ -2,9 +2,8 @@ var getParamNames = require('get-parameter-names');
 
 module.exports = Canister;
 
-function Canister(context, resolvers) {
-  if (typeof resolvers === 'undefined') {
-    resolvers = context;
+function Canister(resolvers, context) {
+  if (!context) {
     context = {};
   }
 
