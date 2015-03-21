@@ -34,19 +34,18 @@ function Canister(resolvers, context) {
       }
     });
 
-    if (unmetDependencies.length === 0) {
-      var result = fn.apply(context, dependencies);
-
-      // If result is a promise, then resolve it and call callback
-      if (result && result.then) {
-        result.then(function(value) {
-          return cb(null, value);
-        }, cb);
-      } else if (synchronous) {
-        return cb(null, result);
-      }
-    } else {
+    if (unmetDependencies.length > 0)
       return cb(new Error('unmet dependencies: ' + unmetDependencies.join(',')));
+
+    var result = fn.apply(context, dependencies);
+
+    // If result is a promise, then resolve it and call callback
+    if (result && result.then) {
+      result.then(function(value) {
+        return cb(null, value);
+      }, cb);
+    } else if (synchronous) {
+      return cb(null, result);
     }
   };
 
