@@ -7,7 +7,7 @@ describe('canister', function() {
     new Canister(function(name) {
       // nothing ever resolves
     }).run(function(a) {
-      assert.fail('should never be called since a is unmet dependency')
+      assert.fail('should never be called since a is unmet dependency');
     }, function(err) {
       //assert.equal(typeof err, 'Error');
       assert.equal(err.message, 'unmet dependencies: a');
@@ -27,6 +27,20 @@ describe('canister', function() {
       done();
     });
   });
+
+	it('passes index to resolver', function(done) {
+    new Canister(function(name, index) {
+			assert(typeof index === 'number');
+      if (name === 'a') return index;
+      if (name === 'b') return index;
+    }).run(function(a, b) {
+			assert.equal(a, 0);
+			assert.equal(b, 1);
+		}, function(err, result) {
+			assert(!err, err);
+			done();
+		});
+	});
 
   it('handles simple injection', function(done) {
     new Canister(function(name) {

@@ -20,12 +20,12 @@ function Canister(resolvers, context) {
 
     var paramNames = getParamNames(fn);
 
-    paramNames.forEach(function(paramName) {
+    paramNames.forEach(function(paramName, index) {
       if (paramName === 'cb') {
         synchronous = false;
         dependencies.push(cb);
       } else if (paramName) {
-        var depValue = resolve(resolvers, paramName);
+        var depValue = resolve(resolvers, paramName, index);
         if (depValue !== null && depValue !== undefined) {
           dependencies.push(depValue);
         } else {
@@ -49,13 +49,13 @@ function Canister(resolvers, context) {
     }
   };
 
-  function resolve(resolvers, name) {
+  function resolve(resolvers, name, index) {
     for (var i = 0; i < resolvers.length; i++) {
       var resolver = resolvers[i];
 
       var resolution;
       if (typeof resolver === 'function') {
-        resolution = resolver(name);
+        resolution = resolver(name, index);
       } else if (typeof resolver === 'object') {
         resolution = resolver[name];
       }
