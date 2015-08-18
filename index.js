@@ -1,31 +1,34 @@
 var getParamNames = require('get-parameter-names');
+var Promise = require('any-promise');
 
 module.exports = Canister;
 
 function Canister(resolvers, context) {
-  if (!context) {
-    context = {};
-  }
+  this.context = context || {};
+  this.resolvers = [].concat(resolvers);
+}
 
-  if (!Array.isArray(resolvers)) {
-    resolvers = [resolvers];
-  }
+Canister.prototype.run = function (fn, cb) {
+  var resolvers = this.resolvers;
+  var context = this.context;
 
-  this.run = function(fn, cb) {
-    cb = cb || function() {};
-
+  var result = new Promise(function(resolve, reject) {
     var dependencies = [];
     var unmetDependencies = [];
     var synchronous = true;
 
     var paramNames = getParamNames(fn);
 
-    paramNames.forEach(function(paramName, index) {
+    paramNames.forEach(function (paramName, index) {
       if (paramName === 'cb') {
         synchronous = false;
-        dependencies.push(cb);
+        dependencies.push(function (err, value) {
+          if (err) return reject(err);
+
+          resolve(value);
+        });
       } else if (paramName) {
-        var depValue = resolve(resolvers, paramName, index);
+        var depValue = resolveDependency(resolvers, paramName, index);
         if (depValue !== null && depValue !== undefined) {
           dependencies.push(depValue);
         } else {
@@ -35,34 +38,40 @@ function Canister(resolvers, context) {
     });
 
     if (unmetDependencies.length > 0)
-      return cb(new Error('unmet dependencies: ' + unmetDependencies.join(',')));
+      return reject(new Error('unmet dependencies: ' + unmetDependencies.join(',')));
 
     var result = fn.apply(context, dependencies);
 
     // If result is a promise, then resolve it and call callback
     if (result && result.then) {
-      result.then(function(value) {
-        return cb(null, value);
-      }, cb);
+      result.then(resolve, reject);
     } else if (synchronous) {
-      return cb(null, result);
+      return resolve(result);
     }
-  };
+  });
 
-  function resolve(resolvers, name, index) {
-    for (var i = 0; i < resolvers.length; i++) {
-      var resolver = resolvers[i];
+  if (cb) {
+    result.then(function (value) {
+      cb(null, value);
+    }, cb);
+  } else {
+    return result;
+  }
+};
 
-      var resolution;
-      if (typeof resolver === 'function') {
-        resolution = resolver(name, index);
-      } else if (typeof resolver === 'object') {
-        resolution = resolver[name];
-      }
+function resolveDependency(resolvers, name, index) {
+  for (var i = 0; i < resolvers.length; i++) {
+    var resolver = resolvers[i];
 
-      if (resolution !== null && resolution !== undefined) {
-        return resolution;
-      }
+    var resolution;
+    if (typeof resolver === 'function') {
+      resolution = resolver(name, index);
+    } else if (typeof resolver === 'object') {
+      resolution = resolver[name];
+    }
+
+    if (resolution !== null && resolution !== undefined) {
+      return resolution;
     }
   }
 }

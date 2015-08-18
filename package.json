@@ -4,7 +4,8 @@
   "description": "A minimalist Dependency Injection container.",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha"
+    "test": "node_modules/.bin/tape test/**/*.js",
+    "lint": "node_modules/.bin/eslint index.js"
   },
   "repository": {
     "type": "git",
@@ -18,12 +19,16 @@
   "bugs": {
     "url": "https://github.com/allain/canister/issues"
   },
+  "files": [
+    "index.js"
+  ],
   "dependencies": {
+    "any-promise": "^0.1.0",
     "get-parameter-names": "^0.2.0"
   },
   "devDependencies": {
-    "bluebird": "^2.9.14",
-    "chai": "~1.8.1",
-    "mocha": "~1.17.0"
+    "bluebird": "^2.9.34",
+    "eslint": "^1.1.0",
+    "tape": "^4.2.0"
   }
 }
