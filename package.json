@@ -1,6 +1,6 @@
 {
   "name": "canister",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A minimalist Dependency Injection container.",
   "main": "index.js",
   "scripts": {
