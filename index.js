@@ -23,7 +23,7 @@ Canister.prototype.run = function (fn, options, cb) {
 
   var result = this.resolveDependencies(paramNames).then(function (resolutions) {
     var unmetDependencies = paramNames.filter(function (name) {
-      return resolutions[name] === undefined;
+      return resolutions[name] === undefined && name !== 'cb';
     });
 
     if (unmetDependencies.length > 0) {
@@ -31,11 +31,9 @@ Canister.prototype.run = function (fn, options, cb) {
         throw new Error('unmet dependencies: ' + unmetDependencies.join(','));
       } else if (unmet === 'skip') {
         return undefined;
-      } /*else if (unmet === 'ignore') {
-        // Full speed ahead
-      } else {
+      } else if (unmet !== 'ignore') {
         throw new Error('invalid value for unmet "' + unmet + '". supported values are "throw", "skip", "ignore". "throw" is the default');
-      }*/
+      }
     }
 
     if (hasCallback) {
@@ -55,6 +53,7 @@ Canister.prototype.run = function (fn, options, cb) {
     } else {
       return fn.apply(context, values(resolutions));
     }
+
   });
 
   if (cb) {
@@ -74,7 +73,9 @@ Canister.prototype.resolveDependencies = function resolve(paramNames) {
   var resolvers = this.resolvers;
 
   paramNames.forEach(function (paramName, index) {
-    resolutions[paramName] = resolveDependency(resolvers, paramName, index);
+    if (paramName !== 'cb') {
+      resolutions[paramName] = resolveDependency(resolvers, paramName, index);
+    }
   });
 
   return Promise.resolve(resolutions);
