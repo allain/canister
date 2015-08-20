@@ -1,8 +1,6 @@
 var getParamNames = require('get-parameter-names');
 var Promise = require('any-promise');
 
-var _ = require('lodash');
-
 function Canister(resolvers, context) {
   this.context = context || {};
   this.resolvers = [].concat(resolvers);
@@ -33,11 +31,11 @@ Canister.prototype.run = function (fn, options, cb) {
         throw new Error('unmet dependencies: ' + unmetDependencies.join(','));
       } else if (unmet === 'skip') {
         return undefined;
-      } else if (unmet === 'ignore') {
+      } /*else if (unmet === 'ignore') {
         // Full speed ahead
       } else {
         throw new Error('invalid value for unmet "' + unmet + '". supported values are "throw", "skip", "ignore". "throw" is the default');
-      }
+      }*/
     }
 
     if (hasCallback) {
@@ -49,13 +47,13 @@ Canister.prototype.run = function (fn, options, cb) {
         };
 
         try {
-          fn.apply(context, _.values(resolutions));
+          fn.apply(context, values(resolutions));
         } catch (e) {
           reject(e);
         }
       });
     } else {
-      return fn.apply(context, _.values(resolutions));
+      return fn.apply(context, values(resolutions));
     }
   });
 
@@ -97,6 +95,12 @@ function resolveDependency(resolvers, name, index) {
       return resolution;
     }
   }
+}
+
+function values(obj) {
+  return Object.keys(obj).map(function(key) {
+    return obj[key];
+  });
 }
 
 module.exports = Canister;
