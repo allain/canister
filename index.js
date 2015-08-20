@@ -67,7 +67,7 @@ Canister.prototype.run = function (fn, options, cb) {
   }
 };
 
-Canister.prototype.resolveDependencies = function resolve(paramNames) {
+Canister.prototype.resolveDependencies = function(paramNames) {
   var resolutions = {};
 
   var resolvers = this.resolvers;
