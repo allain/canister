@@ -92,10 +92,19 @@ blue('runs functions with callbacks properly', function (t) {
   return new Canister(function (name) {
     if (name === 'a') return 'a';
     if (name === 'b') return 'b';
-    if (name === 'cb') return function (err, val) {
-      return val;
-    };
   }).run(function (a, b, cb) {
+    t.equal(arguments.length, 3);
+    cb(null, 'c');
+  }).then(function (result) {
+    t.equal(result, 'c');
+  });
+});
+
+blue('function callback can be anywhere as long as it is called "cb" ', function (t) {
+  return new Canister(function (name) {
+    if (name === 'a') return 'a';
+    if (name === 'b') return 'b';
+  }).run(function (cb, a, b) {
     t.equal(arguments.length, 3);
     cb(null, 'c');
   }).then(function (result) {

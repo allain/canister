@@ -23,7 +23,7 @@ Canister.prototype.run = function (fn, options, cb) {
 
   var result = this.resolveDependencies(paramNames).then(function (resolutions) {
     var unmetDependencies = paramNames.filter(function (name) {
-      return resolutions[name] === undefined && name !== 'cb';
+      return resolutions[name] === undefined;
     });
 
     if (unmetDependencies.length > 0) {
@@ -73,7 +73,9 @@ Canister.prototype.resolveDependencies = function(paramNames) {
   var resolvers = this.resolvers;
 
   paramNames.forEach(function (paramName, index) {
-    if (paramName !== 'cb') {
+    if (paramName === 'cb') {
+      resolutions[paramName] = true; // gets replaced before run
+    } else {
       resolutions[paramName] = resolveDependency(resolvers, paramName, index);
     }
   });
