@@ -1,4 +1,4 @@
-var Promise = require('any-promise');
+var Promise = require('lie');
 var Canister = require('../index.js');
 
 var test = require('tape');

@@ -1,5 +1,5 @@
 var getParamNames = require('get-parameter-names');
-var Promise = require('any-promise');
+var Promise = require('lie');
 
 function Canister(resolvers, context) {
   this.context = context || {};
