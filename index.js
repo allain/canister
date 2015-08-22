@@ -2,6 +2,10 @@ var getParamNames = require('get-parameter-names');
 var Promise = require('lie');
 
 function Canister(resolvers, context) {
+  if (!(this instanceof Canister)) {
+    return new Canister(resolvers, context);
+  }
+
   this.context = context || {};
   this.resolvers = [].concat(resolvers);
 }

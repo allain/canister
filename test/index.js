@@ -164,3 +164,9 @@ blue('supports callback API (failure)', function (t) {
   });
 });
 
+test('supports not using new on creation', function(t) {
+  var can = Canister({});
+  t.ok(can instanceof Canister);
+  t.end();
+});
+
