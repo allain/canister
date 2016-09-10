@@ -23,7 +23,7 @@
     "index.js"
   ],
   "dependencies": {
-    "get-parameter-names": "^0.3.0",
+    "@avejidah/get-parameter-names": "^0.3.2",
     "lie": "^3.0.1"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-var getParamNames = require('get-parameter-names');
+var getParamNames = require('@avejidah/get-parameter-names');
 var Promise = require('lie');
 
 function Canister(resolvers, context) {
