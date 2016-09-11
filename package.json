@@ -23,8 +23,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@avejidah/get-parameter-names": "^0.3.2",
-    "lie": "^3.0.1"
+    "@avejidah/get-parameter-names": "^0.3.2"
   },
   "devDependencies": {
     "blue-tape": "^0.1.10"

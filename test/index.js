@@ -1,4 +1,3 @@
-var Promise = require('lie')
 var Canister = require('../index.js')
 
 var test = require('blue-tape')
