@@ -8,12 +8,13 @@ A minimalist Dependency Injection container.
 
 This module is installed via npm:
 
-``` bash
-$ npm install canister
+```sh
+npm install canister
 ```
 
 ##  Example Usage
-``` js
+
+```JavaScript
 var Canister = require('canister');
 
 // Simple canister
@@ -44,9 +45,6 @@ var canister2 = new Canister([{a: 10}, function(name) {
 canister2.run(function(a, b) {
   console.log(a, b);
 });
-
-// Bound context for function
-var canister3 = new Canister(
 ```
 
 
