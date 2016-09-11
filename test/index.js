@@ -48,7 +48,7 @@ test('passes index to resolver', function (t) {
   }).run(function (a, b) {
     t.equal(a, 0)
     t.equal(b, 1)
-  }, function(err) {
+  }, function (err) {
     t.error(err)
     t.end()
   })

@@ -16,8 +16,8 @@ Canister.prototype = {
   resolve: resolveAll
 }
 
-function run(fn, options, cb) {
-  var result;
+function run (fn, options, cb) {
+  var result
 
   if (cb === undefined && typeof (options) === 'function') {
     cb = options
@@ -28,8 +28,8 @@ function run(fn, options, cb) {
 
   if (cb === undefined) {
     // If no callback is given, then the run method will return a promise
-    result = new Promise(function(resolve, reject) {
-      cb = function(err, val) {
+    result = new Promise(function (resolve, reject) {
+      cb = function (err, val) {
         return err ? reject(err) : resolve(val)
       }
     })
@@ -40,30 +40,28 @@ function run(fn, options, cb) {
   var paramNames = getParamNames(fn)
   var context = this.context
 
-  var hasCallback = paramNames.indexOf('cb') !== -1
-
   resolveAll(this.resolvers, paramNames, function (err, resolutions) {
     var unmetDependencies = paramNames.filter(function (name) {
       return resolutions[name] === undefined
     })
 
     if (unmetDependencies.length > 0) {
-      if (unmet === 'throw') 
+      if (unmet === 'throw')
         return cb(new Error('unmet dependencies: ' + unmetDependencies.join(',')))
 
-      if (unmet === 'skip') 
+      if (unmet === 'skip')
         return cb()
 
-      if (unmet !== 'ignore') 
+      if (unmet !== 'ignore')
         return cb(new Error('invalid value for unmet "' + unmet + '". supported values are "throw", "skip", "ignore". "throw" is the default'))
     }
 
     try {
-      if (hasCallback) {
-        resolutions.cb = cb
-        fn.apply(context, values(resolutions))
-      } else {
+      if (paramNames.indexOf('cb') === -1) {
         cb(null, fn.apply(context, values(resolutions)))
+      } else {
+        resolutions.cb = cb
+        fn.apply(context, values(resolution))
       }
     } catch (err) {
       cb(err)
@@ -73,7 +71,7 @@ function run(fn, options, cb) {
   return result
 }
 
-function resolveAll(resolvers, paramNames, cb) {
+function resolveAll (resolvers, paramNames, cb) {
   var resolutions = {}
 
   paramNames.forEach(function (paramName, index) {
@@ -105,7 +103,12 @@ function resolve (resolvers, name, index) {
 }
 
 function values (obj) {
-  return Object.keys(obj).map(function (key) {
-    return obj[key]
-  })
+  var keys = Object.keys(obj)
+  var ret = []
+
+  for (var i = 0, n = keys.length; i < n; i++) {
+    ret.push(obj[keys[i]])
+  }
+
+  return ret
 }
