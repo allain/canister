@@ -1,6 +1,6 @@
 {
   "name": "canister",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A minimalist Dependency Injection container.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "files": [
     "index.js",
-		"lib/get-parameter-names.js"
+    "lib/get-parameter-names.js"
   ],
   "devDependencies": {
     "blue-tape": "^0.1.10"
