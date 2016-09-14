@@ -1,4 +1,4 @@
-var getParamNames = require('@avejidah/get-parameter-names')
+var getParamNames = require('./lib/get-parameter-names')
 
 module.exports = Canister
 
@@ -13,7 +13,9 @@ function Canister (resolvers, context) {
 
 Canister.prototype = {
   run: run,
-  resolve: resolveAll
+  resolve: function(paramNames, cb) {
+		return resolveAll(this.resolvers, paramNames, cb)
+	}	
 }
 
 function run (fn, options, cb) {
@@ -61,7 +63,7 @@ function run (fn, options, cb) {
         cb(null, fn.apply(context, values(resolutions)))
       } else {
         resolutions.cb = cb
-        fn.apply(context, values(resolution))
+        fn.apply(context, values(resolutions))
       }
     } catch (err) {
       cb(err)

@@ -15,7 +15,7 @@ test('callsback with error if unmet dependencies', function (t) {
 })
 
 test('supports resolution', function (t) {
-  return new Canister({a: true}).resolveDependencies(['a', 'b']).then(function (resolutions) {
+  return new Canister({a: true}).resolve(['a', 'b']).then(function (resolutions) {
     t.deepEqual(resolutions, {a: true, b: undefined})
   }, t.fail)
 })
