@@ -20,7 +20,8 @@
     "url": "https://github.com/allain/canister/issues"
   },
   "files": [
-    "index.js"
+    "index.js",
+		"lib/get-parameter-names.js"
   ],
   "devDependencies": {
     "blue-tape": "^0.1.10"
