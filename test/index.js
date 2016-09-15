@@ -1,4 +1,5 @@
 var Canister = require('../index.js')
+var Promise = require('any-promise')
 
 var test = require('blue-tape')
 

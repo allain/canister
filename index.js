@@ -1,4 +1,5 @@
 var getParamNames = require('./lib/get-parameter-names')
+var Promise = require('any-promise')
 
 module.exports = Canister
 
